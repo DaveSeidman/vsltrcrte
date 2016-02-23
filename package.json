@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/DaveSeidman/vsltrcrte#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
     "iplocation": "^2.0.1",
     "satelize": "^0.2.0",
     "traceroute": "0.0.3"
