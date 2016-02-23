@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/DaveSeidman/vsltrcrte/issues"
   },
-  "homepage": "https://github.com/DaveSeidman/vsltrcrte#readme"
+  "homepage": "https://github.com/DaveSeidman/vsltrcrte#readme",
+  "dependencies": {
+    "iplocation": "^2.0.1",
+    "traceroute": "0.0.3"
+  }
 }
