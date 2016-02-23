@@ -18,6 +18,7 @@
   "homepage": "https://github.com/DaveSeidman/vsltrcrte#readme",
   "dependencies": {
     "iplocation": "^2.0.1",
+    "satelize": "^0.2.0",
     "traceroute": "0.0.3"
   }
 }
