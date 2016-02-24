@@ -55,7 +55,7 @@ app.post('/getLocation', function (req, res) {
 
         if(!error) {
 
-            if(locRes.latitude && locRes.longitude) {
+            if(locRes) if(locRes.latitude && locRes.longitude) {
                 console.log(locRes.latitude, locRes.longitude);
                 res.send( { lat : locRes.latitude, lng : locRes.longitude } );
             }
