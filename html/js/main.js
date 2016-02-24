@@ -1,7 +1,11 @@
+"use strict";
+
 var map, $map;
 var $web;
-var ips;d
+var ips;
+var $ipList;
 var markerArray = [];
+var lastPosition;
 
 $(document).on("ready", function() {
 
@@ -42,6 +46,7 @@ function startTrace() {
         markerArray[i].setMap(null);
     }
     markerArray.length = 0;
+    lastPosition = undefined;
 
     $.post("http://localhost:80/getRoute", { site:$web.val() } , function(data) {
 
@@ -67,6 +72,7 @@ function locateIP(index) {
 
     $.post("http://localhost:80/getLocation", { ip:ips[index] }, function(data) {
 
+        addMarker(data);
         if(index < ips.length - 2) locateIP(index+1);
     });
 }
@@ -76,8 +82,25 @@ function addMarker(data) {
 
     var marker = new google.maps.Marker({
         position: data,
-        map: map/*,
-        title: 'Hello World!'*/
+        map: map
       });
-    markerArray.push(marker);
+
+      markerArray.push(marker);
+
+    if(lastPosition) {
+        var pth = [ lastPosition, data ];
+        console.log(pth);
+
+        var line = new google.maps.Polyline({
+            path: pth,
+            geodesic: true,
+            strokeColor: "#FFA7B2",
+            strokeOpacity: 0.5,
+            strokeWeight: 2,
+            map: map
+        });
+    }
+
+    lastPosition = data;
+
 }
