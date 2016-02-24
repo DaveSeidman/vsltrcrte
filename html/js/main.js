@@ -6,6 +6,23 @@ var ips;
 var $ipList;
 var markerArray = [];
 var lastPosition;
+var serverAddress;
+
+getEnvironment();
+
+function getEnvironment() {
+
+    var isLocal = (window.location.host.indexOf('localhost') > -1 || window.location.host.indexOf('192') > -1);
+    if(isLocal) {
+        // $.getJSON("config.json", function(data) {
+        //     serverAddress = 'http://' + data.network.ip + ':80';
+        // });
+        serverAddress = 'http://localhost:80';
+    }
+    else {
+        serverAddress = 'http://54.187.226.253:80';
+    }
+}
 
 $(document).on("ready", function() {
 
@@ -48,7 +65,8 @@ function startTrace() {
     markerArray.length = 0;
     lastPosition = undefined;
 
-    $.post("http://localhost:80/getRoute", { site:$web.val() } , function(data) {
+
+    $.post(serverAddress + '/getRoute', { site:$web.val() } , function(data) {
 
         ips = data;
         for(var i = 0; i < data.length; i++) {
@@ -70,7 +88,8 @@ function locateIPs() {
 
 function locateIP(index) {
 
-    $.post("http://localhost:80/getLocation", { ip:ips[index] }, function(data) {
+
+    $.post(serverAddress + '/getLocation', { ip:ips[index] }, function(data) {
 
         addMarker(data);
         if(index < ips.length - 2) locateIP(index+1);
