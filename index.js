@@ -6,6 +6,13 @@ var iplocation = require('iplocation');
 var satelize = require('satelize');
 var traceroute = require('traceroute');
 var exec = require('child_process').exec;
+var os = require('os');
+var fs = require('fs');
+var ifaces = os.networkInterfaces();
+var ipAddr;
+var configFile = './html/config.json';
+var config = require(configFile);
+
 
 server.listen(80);
 app.use('/', express.static('html/'));
@@ -82,26 +89,29 @@ function getRoute(url, callback) {
     });
 }
 
-/*function findIP(index, callback) {
 
-    console.log("finding", ips[index]);
 
-    //iplocation(ips[index], function(error, res) {
-    satelize.satelize({ip:ips[index]}, function(error, res) {
 
-        if(!error) {
 
-            console.log(res.latitude, res.longitude);
-            return callback();
-        //    coords.push( { lat : res.latitude, lon : res.longitude } );
+// get local IP address
+
+Object.keys(ifaces).forEach(function (ifname) {
+    var alias = 0;
+    ifaces[ifname].forEach(function (iface) {
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+            return;
+        }
+        if (alias >= 1) {
+
         }
         else {
-
-            console.log("location lookup failed");
+            ipAddr = iface.address;
+            console.log(config);
+            config.network.ip = ipAddr;
+            fs.writeFile(configFile, JSON.stringify(config, null, 2), function(e) { // can probably delete 'e'
+                console.log("updated config file with IP address");
+            });
         }
-
-        if(index < ips.length - 1) findIP(index + 1);
-        else return callback();
-    })
-}
-*/
+        ++alias;
+    });
+});
